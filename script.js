@@ -58,29 +58,34 @@ function compile() {
 		else if(["go", "goto", "g"].includes(inst)) {
 			let pNow = turtle
 			let endPos = {x: args[0], y: args[1]}
-			/*let rx = pNow.x > endPos.x ? "лв 90" : "пр 90"
-			let ry = pNow.y > endPos.y ? "лв 90" : "пр 90"
-			
-			output += `${rx} вп ${Math.abs(pNow.x - endPos.x)} ${ry} нд ${Math.abs(pNow.y - endPos.y)}`*/
 			let x = endPos.x - pNow.x;
 			let y = endPos.y - pNow.y;
 			let oper = 1
 			
-			console.log(x, y)
-			if(x < 0 || y < 0)
+			if(x < 0)
 				oper = -1
 			let calc = (Math.acos(y / Math.sqrt(y * y + x * x)) / Math.PI * 180).toFixed(5); // calculate rotation and convert to degrees
-			
 			let dist = Math.sqrt(y * y + x * x);
-			console.log(calc)
 			output += `${oper > 0 ? "пр" : "лв"} ${calc} вп ${dist} ${oper < 0 ? "пр" : "лв"} ${calc} `.replaceAll('.', ',')
 			turtle.x = args[0]
 			turtle.y = args[1]
-			
 		}
 		
-		else if(["rgo", "rgoto", "rg", "r"].includes(inst)) {
-
+		else if(["rgo", "rgoto", "rg"].includes(inst)) {
+			let pNow = turtle
+			let endPos = {x: args[0] + pNow.x, y: args[1] + pNow.y}
+			let x = endPos.x - pNow.x;
+			let y = endPos.y - pNow.y;
+			
+			let oper = 1
+			
+			if(x < 0)
+				oper = -1
+			let calc = (Math.acos(y / Math.sqrt(y * y + x * x)) / Math.PI * 180).toFixed(5); // calculate rotation and convert to degrees
+			let dist = Math.sqrt(y * y + x * x);
+			output += `${oper > 0 ? "пр" : "лв"} ${calc} вп ${dist} ${oper < 0 ? "пр" : "лв"} ${calc} `.replaceAll('.', ',')
+			turtle.x = turtle.x + args[0]
+			turtle.y = turtle.y + args[1]
 			
 		}
 		else if(inst == "pu")
