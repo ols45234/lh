@@ -9,9 +9,18 @@ var dia = Math.sqrt(2)
 
 function compile() {
     let input = document.getElementById("i").value
+	//input = input.replaceAll("pass", document.getElementById("p").value)
     let output = ''
-    let turtle = {x: 0, y: 0, stepSize: 1, loop: 0, loopStart: 0, inLoop: false}
+    let turtle = {x: 0, y: 0, stepSize: 1, loop: 0, loopStart: 0, inLoop: false, cx: 0, cy: 0}
+	let inputArr = input.split('\n')
+	for(var id = 0; id < inputArr.length; id++) {
+		let inst = inputArr[id]
+		if(inst.split(' ')[0] == 'call')
+			input = input.replaceAll(inst, (document.getElementById(`func_${inst.split(' ')[1]}`).value))
+	}
 	inputArr = input.split('\n')
+
+	
 	for(var id = 0; id < inputArr.length; id++) {
 		let Finst = inputArr[id]
 	
@@ -61,8 +70,8 @@ function compile() {
 		else if(["go", "goto", "g"].includes(inst)) {
 			let pNow = turtle
 			let endPos = {x: args[0], y: args[1]}
-			let x = endPos.x - pNow.x;
-			let y = endPos.y - pNow.y;
+			let x = endPos.x - pNow.x + pNow.cx;
+			let y = endPos.y - pNow.y + pNow.cy;
 			let oper = 1
 			
 			if(x < 0)
@@ -96,7 +105,7 @@ function compile() {
 		else if(inst == "pd")
 			output += "по "
 		else if(inst == "*") {
-			turtle.stepSize = arg;
+			turtle.stepSize = args[0];
 		}
 		else if(["re", "repeat", "rep"].includes(inst)) {
 			output += `повтори ${args[0]} [`
@@ -113,6 +122,11 @@ function compile() {
 			}
 			else
 				id = turtle.loopStart
+			
+		}
+		else if(["sc", "sz"].includes(inst)) {
+			turtle.cx = turtle.x
+			turtle.cy = turtle.y
 			
 		}
 		else {
@@ -154,6 +168,38 @@ function redraw() {
 		ctx.stroke()
 		ctx.closePath()
 	}
+}
+
+function reformPasses() {
+	let input = document.getElementById("i").value
+	let inputArr = input.split('\n')
+	let passes = []
+	for(var id = 0; id < inputArr.length; id++) {
+		let inst = inputArr[id].split(' ')
+		if(inst[0] == 'call' && !passes.includes(`func_${inst[1]}`))
+			passes.push(`func_${inst[1]}`)
+	}
+	//console.log(passes)
+	
+	passElems = document.getElementById('passes').children
+	
+	for(let i = 0; i < passElems.length; i++) {
+		elem = passElems[i]
+		if(!(passes.includes(elem.id))) // удаляем текстовое поле если такого на добавление нету
+			elem.remove()
+		else
+			passes[passes.findIndex(function (e) {return e == elem.id})] = undefined //удаляем из списка на создание если такой есть
+	}
+	passes.forEach(i => { //добовляем
+		if(!i)
+			return
+		elem = document.createElement('textarea');
+		elem.id = i;
+		elem.style = "width:200px;height:200px";
+		elem.placeholder = `print code of function "${i.slice(5)}" here...`;
+		document.getElementById('passes').appendChild(elem)
+	})
+	
 }
 
 setInterval(() => redraw(), 500)
