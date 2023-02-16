@@ -164,6 +164,9 @@ function compile() {
 				turtle.y = turtle.py
 			}
 		}
+		else if(inst == "poly") {
+			output += (turtle.inLoop) ? '' : `нк ${args[2]} повтори ${args[0]} [вп ${args[1]} пр ${360 / args[0]}] нк 0 `
+		}
 		
 		else {
 			output += Finst
@@ -174,7 +177,7 @@ function compile() {
 		
 	}
 	//console.log(output)
-	output = output.replaceAll(/ \s*/gi, " ")
+	output = output.replaceAll(/\s+/gi, " ")
 	
     document.getElementById("o").value = output
 }
