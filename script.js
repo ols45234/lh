@@ -1,4 +1,4 @@
-var canvas = document.getElementById("canvas");
+﻿var canvas = document.getElementById("canvas");
 var canvaswidth = 512;
 var canvasheight = 512;
 
@@ -32,38 +32,38 @@ function compile() {
 		arg = Math.abs(arg)
 		arg = arg * turtle.stepSize;
 		if(inst == "u") {
-			output += (turtle.inLoop) ? '' : `нк 0 ${mc} ${arg} `
+			output += (turtle.inLoop) ? '' : `${mc} ${arg} `
 			turtle.y += arg;
 		}
 		else if(inst == "d") {
-			output += (turtle.inLoop) ? '' : `нк 180 ${mc} ${arg} `
+			output += (turtle.inLoop) ? '' : `пр 180 ${mc} ${arg}  лв 180 `
 			turtle.y -= arg;
 		}
 		else if(inst == "l") {
 			turtle.x -= arg;
-			output += (turtle.inLoop) ? '' : `нк 270 ${mc} ${arg} `
+			output += (turtle.inLoop) ? '' : `лв 90 ${mc} ${arg} пр 90 `
 		}
 		else if(inst == "r") {
-			output += (turtle.inLoop) ? '' : `нк 90 ${mc} ${arg} `
+			output += (turtle.inLoop) ? '' : `пр 90 ${mc} ${arg} лв 90 `
 			turtle.x += arg;
 		}
 		else if(inst == "ul") {
-			output += (turtle.inLoop) ? '' : `нк 315 ${mc} ${dia * arg} `
+			output += (turtle.inLoop) ? '' : `лв 45 ${mc} ${dia * arg} пр 45 `
 			turtle.x -= arg;
 			turtle.y += arg;
 		}
 		else if(inst == "ur") {
-			output += (turtle.inLoop) ? '' : `нк 45 ${mc} ${dia * arg} `
+			output += (turtle.inLoop) ? '' : `пр 45 ${mc} ${dia * arg} лв 45 `
 			turtle.x += arg;
 			turtle.y += arg;
 		}
 		else if(inst == "dl") {
-			output += (turtle.inLoop) ? '' : `нк 225 ${mc} ${dia * arg} `
+			output += (turtle.inLoop) ? '' : `лв 135 ${mc} ${dia * arg} пр 135 `
 			turtle.x -= arg;
 			turtle.y -= arg;
 		}
 		else if(inst == "dr") {
-			output += (turtle.inLoop) ? '' : `нк 135 ${mc} ${dia * arg} `
+			output += (turtle.inLoop) ? '' : `пр 135 ${mc} ${dia * arg} лв 135 `
 			turtle.x += arg;
 			turtle.y -= arg;
 		}
